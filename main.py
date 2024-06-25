@@ -34,25 +34,25 @@ BLACK = (0, 0, 0)
 font = pygame.font.Font('./fonts/AttackGraffiti.ttf', 32)
 
 #Set text
-score_text = font.render("Score: " + str(score), True, GREEN, DARK_GREEN)
+score_text = font.render("Score: " + str(score), True, GREEN, BLACK)
 score_rect = score_text.get_rect()
 score_rect.topleft = (10, 10)
 
-title_text = font.render("Feed the Dragon", True, GREEN, WHITE)
+title_text = font.render("Feed the Dragon", True, GREEN, BLACK)
 title_rect = title_text.get_rect()
 title_rect.centerx = WINDOW_WIDTH//2
 title_rect.y = 10
 
 
-lives_text = font.render("Lives: " + str(player_lives), True, GREEN, DARK_GREEN)
+lives_text = font.render("Lives: " + str(player_lives), True, GREEN, BLACK)
 lives_rect = lives_text.get_rect()
 lives_rect.topright = (WINDOW_WIDTH - 10, 10)
 
-game_over_text = font.render("GAMEOVER", True, GREEN, DARK_GREEN)
+game_over_text = font.render("GAMEOVER", True, GREEN, BLACK)
 game_over_rect = game_over_text.get_rect()
 game_over_rect.center = (WINDOW_WIDTH//2, WINDOW_HEIGHT//2)
 
-continue_text = font.render("Press any key to continue", True, GREEN, DARK_GREEN)
+continue_text = font.render("Press any key to continue", True, GREEN, BLACK)
 continue_rect = continue_text.get_rect()
 continue_rect.center = (WINDOW_WIDTH//2, WINDOW_HEIGHT//2 + 32)
 
@@ -83,7 +83,23 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
+    #Filling display
+    display.fill(BLACK)
 
+    #Blit the hud
+    display.blit(score_text, score_rect)
+    display.blit(lives_text, lives_rect)
+    display.blit(title_text, title_rect)
+    pygame.draw.line(display, WHITE, (0, 64), (WINDOW_WIDTH, 64), 2)
+
+    #Blit images
+    display.blit(player_image, player_rect)
+    display.blit(coin_image, coin_rect)
+    
+
+    #Update display and tick clock
+    pygame.display.update()
+    clock.tick(FPS)
 
 #Quit game
 pygame.quit()
