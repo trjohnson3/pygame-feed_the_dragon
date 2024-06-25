@@ -15,9 +15,9 @@ clock = pygame.time.Clock()
 
 #Set game values
 PLAYER_STARTING_LIVES = 5
-VELOCITY = 5
+PLAYER_VELOCITY = 5
 COIN_STARTING_VELOCITY = 5
-COIN_ACCELERATION = .5
+COIN_ACCELERATION = .25
 BUFFER_DISTANCE = 100
 
 score = 0
@@ -60,7 +60,7 @@ continue_rect.center = (WINDOW_WIDTH//2, WINDOW_HEIGHT//2 + 32)
 coin_sound = pygame.mixer.Sound('./sounds/coin.wav')
 miss_sound = pygame.mixer.Sound('./sounds/miss.wav')
 # miss_sound.set_volume(.1)
-pygame.mixer.music.load("./sounds/background.wav")
+background = pygame.mixer.music.load("./sounds/background.wav")
 
 #Set images
 player_image = pygame.image.load('./images/dragon_right.png')
@@ -77,11 +77,40 @@ coin_rect.y = random.randint(64, WINDOW_HEIGHT - 48)
 
 
 #Main game loop
+pygame.mixer.music.play(-1, 0.0)
 running = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+
+    #Check to see if user want to move
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_UP] and player_rect.top > 64:
+        player_rect.y -= PLAYER_VELOCITY
+    if keys[pygame.K_DOWN] and player_rect.bottom < WINDOW_HEIGHT:
+        player_rect.y += PLAYER_VELOCITY
+
+    #Move the coin
+    if coin_rect.x < 0:
+        player_lives -= 1
+        miss_sound.play()
+        coin_rect.x = WINDOW_WIDTH + BUFFER_DISTANCE
+        coin_rect.y = random.randint(64, WINDOW_HEIGHT - 48)
+    else:
+        coin_rect.x -= coin_velocity
+
+    #Check for collisions
+    if player_rect.colliderect(coin_rect):
+        score += 1
+        coin_sound.play()
+        coin_velocity += COIN_ACCELERATION
+        coin_rect.x = WINDOW_WIDTH + BUFFER_DISTANCE
+        coin_rect.y = random.randint(64, WINDOW_HEIGHT - 48)
+    
+    #Update hub
+    score_text = font.render("Score: " + str(score), True, GREEN, BLACK)
+    lives_text = font.render("Lives: " + str(player_lives), True, GREEN, BLACK)
 
     #Filling display
     display.fill(BLACK)
