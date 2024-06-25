@@ -48,8 +48,19 @@ lives_text = font.render("Lives: " + str(player_lives), True, GREEN, DARK_GREEN)
 lives_rect = lives_text.get_rect()
 lives_rect.topright = (WINDOW_WIDTH - 10, 10)
 
-#Set sounds and music
+game_over_text = font.render("GAMEOVER", True, GREEN, DARK_GREEN)
+game_over_rect = game_over_text.get_rect()
+game_over_rect.center = (WINDOW_WIDTH//2, WINDOW_HEIGHT//2)
 
+continue_text = font.render("Press any key to continue", True, GREEN, DARK_GREEN)
+continue_rect = continue_text.get_rect()
+continue_rect.center = (WINDOW_WIDTH//2, WINDOW_HEIGHT//2 + 32)
+
+#Set sounds and music
+coin_sound = pygame.mixer.Sound('./sounds/coin.wav')
+miss_sound = pygame.mixer.Sound('./sounds/miss.wav')
+# miss_sound.set_volume(.1)
+pygame.mixer.music.load("./sounds/background.wav")
 
 #Set images
 
