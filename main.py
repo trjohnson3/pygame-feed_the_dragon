@@ -14,7 +14,7 @@ FPS = 60
 clock = pygame.time.Clock()
 
 #Set game values
-PLAYER_STARTING_LIVES = 5
+PLAYER_STARTING_LIVES = 1
 PLAYER_VELOCITY = 5
 COIN_STARTING_VELOCITY = 5
 COIN_ACCELERATION = .25
@@ -111,6 +111,30 @@ while running:
     #Update hub
     score_text = font.render("Score: " + str(score), True, GREEN, BLACK)
     lives_text = font.render("Lives: " + str(player_lives), True, GREEN, BLACK)
+
+    #Check oif game over
+    if player_lives <= 0:
+        display.blit(game_over_text, game_over_rect)
+        display.blit(continue_text, continue_rect)
+        pygame.display.update()
+        #Pause game until player presses a key
+        pygame.mixer.music.pause()
+        is_paused = True
+        while is_paused:
+            for event in pygame.event.get():
+                #Player wants to continue
+                if event.type == pygame.KEYDOWN:
+                    score = 0
+                    player_lives = PLAYER_STARTING_LIVES
+                    player_rect.y = WINDOW_HEIGHT//2
+                    coin_velocity = COIN_STARTING_VELOCITY
+                    pygame.mixer.music.play()
+                    is_paused = False
+                #Player wants to quit
+                if event.type == pygame.QUIT:
+                    is_paused = False
+                    running = False
+
 
     #Filling display
     display.fill(BLACK)
