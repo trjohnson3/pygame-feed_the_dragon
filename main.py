@@ -1,4 +1,4 @@
-import pygame
+import pygame, random
 
 #Initialize pygame
 pygame.init()
@@ -63,7 +63,15 @@ miss_sound = pygame.mixer.Sound('./sounds/miss.wav')
 pygame.mixer.music.load("./sounds/background.wav")
 
 #Set images
+player_image = pygame.image.load('./images/dragon_right.png')
+player_rect = player_image.get_rect()
+player_rect.x = 32
+player_rect.centery = WINDOW_HEIGHT//2
 
+coin_image = pygame.image.load('./images/coin.png')
+coin_rect = coin_image.get_rect()
+coin_rect.x = WINDOW_WIDTH + BUFFER_DISTANCE
+coin_rect.y = random.randint(64, WINDOW_HEIGHT - 48)
 
 
 
